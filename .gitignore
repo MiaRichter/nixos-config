@@ -1,0 +1,15 @@
+# Nix
+/nix/
+result
+*.result
+
+# Временные файлы
+*.swp
+*~
+.*.swp
+.*.swo
+
+# Секреты
+secrets/
+*.secret
+password*
