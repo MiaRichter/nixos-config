@@ -1,11 +1,14 @@
+# /home/akane/nixos-config/configuration.nix
 { config, lib, pkgs, ... }:
 
 {
+  services.xserver.videoDrivers = ["nvidia"];
   imports = [ ./hardware-configuration.nix ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # Убери это для стабильности. Это тянет нестабильные драйверы
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "DesMia";
   networking.networkmanager.enable = true;
@@ -17,7 +20,9 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    withUWSM = true;
+    # withUWSM НЕ СУЩЕСТВУЕТ в stable-ветке Hyprland для NixOS 25.11
+    # Это опция из unstable/nightly
+    # withUWSM = true;
   };
   
   hardware.nvidia = {
@@ -27,29 +32,29 @@
     nvidiaSettings = true;
   };
 
-  # ПРАВИЛЬНЫЕ НАСТРОЙКИ ДЛЯ NixOS 25.11:
-  # hardware.graphics был переименован обратно в hardware.opengl
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    #driSupport = true;
-    driSupport32Bit = true;  # Для 32-битных приложений (Steam и др.)
-    # Если используете NVIDIA:
-    extraPackages = with pkgs; [
-      # Для NVIDIA нужно добавить эти пакеты
-      nvidia-vaapi-driver
-    ];
+    enable32Bit = true;
   };
 
-  # Звуковая система
-  services.pulseaudio.enable = false;
-  services.pipewire = {
-    enable = true;
-    pulse.enable = true;
-    alsa = {
+  # ВСЕ сервисы должны быть в одном блоке
+  services = {
+    # Дисплей менеджер
+    displayManager.gdm = {
       enable = true;
-      support32Bit = true;
+      wayland = true;
     };
-    jack.enable = true;
+    
+    # Звук
+    pipewire = {
+      enable = true;
+      pulse.enable = true;
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
+      jack.enable = true;
+    };
   };
 
   users.users.akane = {
@@ -60,10 +65,14 @@
       firefox
       rofi
       nautilus
+      # Эти пакеты из unstable, они сломают сборку
+      # hyprpaper
+      # hyprlock
+      # hypridle
+      # nvtopPackages.nvidia
     ];
   };
 
-  # Настройки сессии и Wayland
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     MOZ_ENABLE_WAYLAND = "1";
@@ -73,7 +82,6 @@
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
-    # Для NVIDIA:
     WLR_NO_HARDWARE_CURSORS = "1";
     LIBVA_DRIVER_NAME = "nvidia";
   };
@@ -81,25 +89,19 @@
   environment.systemPackages = with pkgs; [
     vim
     nano
-    hyprpaper
-    hyprlock
-    hypridle
     htop
     neofetch
     zip
     unzip
     wget
     git
-    # Для NVIDIA:
-    nvtopPackages.nvidia
   ];
 
-  # XDG порталы
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
-      xdg-desktop-portal-hyprland  # Для Hyprland
+      xdg-desktop-portal-hyprland
     ];
   };
 
@@ -108,6 +110,5 @@
     rtkit.enable = true;
   };
 
-  # Убедитесь, что эта версия соответствует вашей фактической версии NixOS
-  system.stateVersion = "25.11"; # Или "24.11" если не обновлялись до 25.11
+  system.stateVersion = "25.11"; # Не меняй это
 }
