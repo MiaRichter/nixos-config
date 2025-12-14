@@ -1,10 +1,13 @@
 # /home/akane/nixos-config/configuration.nix
 { config, lib, pkgs, ... }:
+let
+  # Импортируем файл с пакетами
+  myPackages = import ./packages.nix { inherit pkgs; };
+in
 {
   services.xserver.videoDrivers = ["nvidia"];
   imports = [ 
     ./hardware-configuration.nix
-    ./packages.nix
      ];
 
   boot.loader.systemd-boot.enable = true;
