@@ -27,12 +27,10 @@
     vesktop
     
     # Работа с файлами
-    filezilla
-    transmission-gtk  # ← УЖЕ КОРРЕКТНОЕ ИМЯ в nixpkgs-unstable
     
     # Офис
     libreoffice-fresh
-    okular       # просмотрщик PDF
+    
   ];
 
   # Пакеты для СИСТЕМЫ (все пользователи)
@@ -46,7 +44,7 @@
     htop
     btop         # красивая замена htop
     neofetch
-    nvtop        # мониторинг GPU
+    #nvtop        # мониторинг GPU
     
     # Архиваторы
     zip
