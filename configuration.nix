@@ -1,14 +1,16 @@
 # /home/akane/nixos-config/configuration.nix
 { config, lib, pkgs, ... }:
-
+let
+  # Импортируем файл с пакетами
+  myPackages = import ./packages.nix { inherit pkgs; };
+in
 {
   services.xserver.videoDrivers = ["nvidia"];
   imports = [ ./hardware-configuration.nix ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  # Убери это для стабильности. Это тянет нестабильные драйверы
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "DesMia";
   networking.networkmanager.enable = true;
@@ -60,17 +62,7 @@
   users.users.akane = {
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "audio" "networkmanager" ];
-    packages = with pkgs; [
-      kitty
-      firefox
-      rofi
-      nautilus
-      # Эти пакеты из unstable, они сломают сборку
-      # hyprpaper
-      # hyprlock
-      # hypridle
-      # nvtopPackages.nvidia
-    ];
+    packages = myPackages.userPackages;
   };
 
   environment.sessionVariables = {
@@ -87,15 +79,9 @@
   };
 
   environment.systemPackages = with pkgs; [
-    vim
-    nano
-    htop
-    neofetch
-    zip
-    unzip
-    wget
-    git
-  ];
+    # Системные пакеты из отдельного файла
+  ] ++ myPackages.systemPackages
+    ++ myPackages.gamingPackages;  # Добавляем игровые пакеты
 
   xdg.portal = {
     enable = true;
