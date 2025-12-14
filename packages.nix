@@ -17,7 +17,7 @@
     hyprpaper
     #hyprlock    # блокировщик экрана
     #hypridle    # управление бездействием
-    
+    waybar
     # Мультимедиа
     vlc
     mpv
