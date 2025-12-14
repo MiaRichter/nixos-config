@@ -17,7 +17,6 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    # Рекомендуется для NixOS 24.11+ [citation:3]
     withUWSM = true;
   };
   
@@ -28,28 +27,34 @@
     nvidiaSettings = true;
   };
 
-  # ВНИМАНИЕ: Названия опций изменились в NixOS 25.11
-  hardware.graphics = {
-    enable = true;          # Было: hardware.opengl.enable
-    enable32Bit = true;     # Было: hardware.opengl.driSupport32Bit
-    # Для поддержки 32-битных приложений (например, Steam) можно добавить:
-    # package = pkgs.mesa;
-    # package32 = pkgs.pkgsi686Linux.mesa;
+  # ПРАВИЛЬНЫЕ НАСТРОЙКИ ДЛЯ NixOS 25.11:
+  # hardware.graphics был переименован обратно в hardware.opengl
+  hardware.opengl = {
+    enable = true;
+    #driSupport = true;
+    driSupport32Bit = true;  # Для 32-битных приложений (Steam и др.)
+    # Если используете NVIDIA:
+    extraPackages = with pkgs; [
+      # Для NVIDIA нужно добавить эти пакеты
+      nvidia-vaapi-driver
+    ];
   };
 
-  # Звуковая система - старая опция была переименована
+  # Звуковая система
   services.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     pulse.enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
     jack.enable = true;
   };
 
   users.users.akane = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "video" "audio" "networkmanager" ]; # Добавлен networkmanager
+    extraGroups = [ "wheel" "video" "audio" "networkmanager" ];
     packages = with pkgs; [
       kitty
       firefox
@@ -63,10 +68,14 @@
     NIXOS_OZONE_WL = "1";
     MOZ_ENABLE_WAYLAND = "1";
     QT_QPA_PLATFORM = "wayland";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     SDL_VIDEODRIVER = "wayland";
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
+    # Для NVIDIA:
+    WLR_NO_HARDWARE_CURSORS = "1";
+    LIBVA_DRIVER_NAME = "nvidia";
   };
 
   environment.systemPackages = with pkgs; [
@@ -81,13 +90,17 @@
     unzip
     wget
     git
+    # Для NVIDIA:
+    nvtopPackages.nvidia
   ];
 
-  # XDG порталы - убедитесь, что wlr.enable установлен
+  # XDG порталы
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    wlr.enable = true;  # Используется для Hyprland
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland  # Для Hyprland
+    ];
   };
 
   security = {
@@ -95,6 +108,6 @@
     rtkit.enable = true;
   };
 
-  # ВНИМАНИЕ: Используйте ту версию, на которую вы фактически обновились
-  system.stateVersion = "25.11"; # Или "24.11", если вы ещё на ней
+  # Убедитесь, что эта версия соответствует вашей фактической версии NixOS
+  system.stateVersion = "25.11"; # Или "24.11" если не обновлялись до 25.11
 }
