@@ -26,8 +26,8 @@
     telegram-desktop
     vesktop
     
-    # запрос пароля sudo через GUI
-    polkit_gnome
+    
+    
     # Офис
     libreoffice-fresh
     
@@ -39,6 +39,9 @@
     vim
     nano
     helix        # современный редактор
+
+    # запрос пароля sudo через GUI
+    polkit_gnome
     
     # Мониторинг
     htop

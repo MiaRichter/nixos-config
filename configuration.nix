@@ -22,6 +22,16 @@ in
 
   nixpkgs.config.allowUnfree = true;
 
+  systemd.user.services.polkit-gnome-agent = {
+    description = "polkit-gnome authentication agent";
+    wantedBy = [ "graphical-session.target" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      Restart = "on-failure";
+    };
+  };
+
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
