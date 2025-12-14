@@ -26,8 +26,8 @@
     telegram-desktop
     vesktop
     
-    # Работа с файлами
-    
+    # запрос пароля sudo через GUI
+    polkit_gnome
     # Офис
     libreoffice-fresh
     
