@@ -1,4 +1,5 @@
 # Nix
+/nix/
 result
 *.result
 
