@@ -26,8 +26,6 @@
     telegram-desktop
     vesktop
     
-    
-    
     # Офис
     libreoffice-fresh
     
@@ -40,9 +38,6 @@
     nano
     helix        # современный редактор
 
-    # запрос пароля sudo через GUI
-    polkit_gnome
-    
     # Мониторинг
     htop
     btop         # красивая замена htop

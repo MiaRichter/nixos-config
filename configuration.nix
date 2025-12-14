@@ -21,17 +21,8 @@ in
   time.timeZone = "Asia/Yekaterinburg";
 
   nixpkgs.config.allowUnfree = true;
-
-  systemd.user.services.polkit-gnome-agent = {
-    description = "polkit-gnome authentication agent";
-    wantedBy = [ "graphical-session.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-      Restart = "on-failure";
-    };
-  };
-
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
@@ -75,6 +66,19 @@ in
         support32Bit = true;
       };
       jack.enable = true;
+
+      # Удален config.pipewire - используем extraConfig
+      # Экспериментальные настройки для Dota 2
+      extraConfig.pipewire = {
+        "context.properties" = {
+          "link.max-buffers" = 16;
+          "log.level" = 2;
+          "default.clock.rate" = 48000;
+          "default.clock.quantum" = 1024;
+          "default.clock.min-quantum" = 32;
+          "default.clock.max-quantum" = 8192;
+        };
+      };
     };
   };
   
@@ -99,9 +103,10 @@ in
 
   environment.systemPackages = with pkgs; [
     # Системные пакеты из отдельного файла
+    polkit_gnome
   ] ++ myPackages.systemPackages
     ++ myPackages.gamingPackages;  # Добавляем игровые пакеты
-
+services.flatpak.enable = true;
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
@@ -114,6 +119,6 @@ in
     polkit.enable = true;
     rtkit.enable = true;
   };
-
+  
   system.stateVersion = "25.11"; # Не меняй это
 }
