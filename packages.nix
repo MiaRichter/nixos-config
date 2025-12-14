@@ -1,5 +1,4 @@
-# /home/akane/nixos-config/packages.nix
-{ pkgs, ... }:
+{ pkgs }:
 
 {
   # Пакеты для ПОЛЬЗОВАТЕЛЯ akane
@@ -29,7 +28,7 @@
     
     # Работа с файлами
     filezilla
-    transmission-gtk
+    transmission-gtk  # ← УЖЕ КОРРЕКТНОЕ ИМЯ в nixpkgs-unstable
     
     # Офис
     libreoffice-fresh
