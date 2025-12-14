@@ -101,7 +101,7 @@ in
   system.activationScripts.setup-dotfiles = lib.stringAfter [ "users" ] ''
   echo "=== Setting up dotfiles ==="
   # Запускаем от имени пользователя akane
-  su -l akane -c 'bash ~/nixos-config/setup-symlinks.sh'
+  sudo -l akane -c 'bash ~/nixos-config/setup-symlinks.sh'
 '';
 
   system.stateVersion = "25.11"; # Не меняй это
