@@ -44,6 +44,12 @@ in
 
   # ВСЕ сервисы должны быть в одном блоке
   services = {
+    # Включить службу монтирования
+    udisks2.enable = true;
+  
+    # Автомонтирование внешних дисков
+    gvfs.enable = true;
+
     # Дисплей менеджер
     displayManager.gdm = {
       enable = true;
