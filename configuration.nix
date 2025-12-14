@@ -1,12 +1,11 @@
 # /home/akane/nixos-config/configuration.nix
 { config, lib, pkgs, ... }:
-let
-  # Импортируем файл с пакетами
-  myPackages = import ./packages.nix { inherit pkgs; };
-in
 {
   services.xserver.videoDrivers = ["nvidia"];
-  imports = [ ./hardware-configuration.nix ];
+  imports = [ 
+    ./hardware-configuration.nix
+    ./packages.nix
+     ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -58,7 +57,7 @@ in
       jack.enable = true;
     };
   };
-
+  
   users.users.akane = {
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "audio" "networkmanager" ];
