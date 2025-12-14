@@ -98,5 +98,10 @@ in
     rtkit.enable = true;
   };
 
+  system.activationScripts.setup-dotfiles = lib.stringAfter [ "users" ] ''
+    echo "=== Setting up dotfiles ==="
+    sudo -u akane bash /home/akane/nixos-config/setup-symlinks.sh
+  '';
+
   system.stateVersion = "25.11"; # Не меняй это
 }
