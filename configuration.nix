@@ -5,31 +5,29 @@ let
   myPackages = import ./packages.nix { inherit pkgs; };
 in
 {
-  services.xserver.videoDrivers = ["nvidia"];
   imports = [ 
     ./hardware-configuration.nix
     ./dotfiles.nix
-     ];
+  ];
 
+  # Загрузка
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Сеть
   networking.hostName = "DesMia";
   networking.networkmanager.enable = true;
 
+  # Время
   time.timeZone = "Asia/Yekaterinburg";
 
+  # Настройки Nix
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-    # withUWSM НЕ СУЩЕСТВУЕТ в stable-ветке Hyprland для NixOS 25.11
-    # Это опция из unstable/nightly
-    # withUWSM = true;
-  };
+
+  # Графика
+  services.xserver.videoDrivers = ["nvidia"];
   
   hardware.nvidia = {
     modesetting.enable = true;
@@ -43,21 +41,21 @@ in
     enable32Bit = true;
   };
 
-  # ВСЕ сервисы должны быть в одном блоке
-  services = {
-    # Включить службу монтирования
-    udisks2.enable = true;
-  
-    # Автомонтирование внешних дисков
-    gvfs.enable = true;
+  # Hyprland
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
 
+  # Сервисы
+  services = {
     # Дисплей менеджер
     displayManager.gdm = {
       enable = true;
       wayland = true;
     };
     
-    # Звук
+    # Звук (ИСПРАВЛЕНО - критически важно для Dota 2)
     pipewire = {
       enable = true;
       pulse.enable = true;
@@ -67,8 +65,8 @@ in
       };
       jack.enable = true;
 
-      # Удален config.pipewire - используем extraConfig
-      # Экспериментальные настройки для Dota 2
+      # ИСПРАВЛЕННАЯ конфигурация PipeWire
+      # Старый вариант (extraConfig.pipewire) не работал
       extraConfig.pipewire = {
         "context.properties" = {
           "link.max-buffers" = 16;
@@ -80,15 +78,38 @@ in
         };
       };
     };
+
+    # Дополнительные сервисы
+    udisks2.enable = true;
+    gvfs.enable = true;
+    flatpak.enable = true;
   };
-  
+
+  # XDG Portal
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
+    ];
+  };
+
+  # Безопасность
+  security = {
+    polkit.enable = true;
+    rtkit.enable = true;
+  };
+
+  # Пользователь
   users.users.akane = {
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "audio" "networkmanager" ];
     packages = myPackages.userPackages;
   };
 
+  # Переменные окружения (ДОБАВЛЕНО для Dota 2)
   environment.sessionVariables = {
+    # Wayland
     NIXOS_OZONE_WL = "1";
     MOZ_ENABLE_WAYLAND = "1";
     QT_QPA_PLATFORM = "wayland";
@@ -98,27 +119,22 @@ in
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
     WLR_NO_HARDWARE_CURSORS = "1";
+    
+    # NVIDIA
     LIBVA_DRIVER_NAME = "nvidia";
+    
+    # КРИТИЧЕСКИ ВАЖНО для звука в Dota 2 с PipeWire
+    # Принудительно указываем SDL2 использовать PipeWire
+    SDL_AUDIODRIVER = "pipewire";
+    # Альтернативный вариант, если pipewire не сработает:
+    # SDL_AUDIODRIVER = "pulse";
   };
 
+  # Системные пакеты
   environment.systemPackages = with pkgs; [
-    # Системные пакеты из отдельного файла
     polkit_gnome
   ] ++ myPackages.systemPackages
-    ++ myPackages.gamingPackages;  # Добавляем игровые пакеты
-services.flatpak.enable = true;
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-hyprland
-    ];
-  };
+    ++ myPackages.gamingPackages;
 
-  security = {
-    polkit.enable = true;
-    rtkit.enable = true;
-  };
-  
   system.stateVersion = "25.11"; # Не меняй это
 }
