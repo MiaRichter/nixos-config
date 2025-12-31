@@ -10,7 +10,7 @@
       Type = "oneshot";
       ExecStart = "${pkgs.bash}/bin/bash ${./setup-symlinks.sh}";
       RemainAfterExit = true;
-      User = "akane";
+      User = "anrew";
     };
   };
 }

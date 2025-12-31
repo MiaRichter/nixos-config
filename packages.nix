@@ -1,16 +1,16 @@
-{ pkgs }:
-
+{ pkgs, ... }:
 {
-  # Пакеты для ПОЛЬЗОВАТЕЛЯ akane
-  userPackages = with pkgs; [
-    # Терминалы и оболочки
+environment.systemPackages = with pkgs; [
+  # Терминалы и оболочки
     kitty
     #alacritty  # опционально
-    
+
+    webkitgtk_4_1	
+    patchelf    
+    libxml2
     # Браузеры
     firefox
     #chromium   # опционально
-    
     # GUI утилиты
     rofi
     nautilus
@@ -21,34 +21,43 @@
     # Мультимедиа
     vlc
     mpv
-    
     # Мессенджеры
     telegram-desktop
     vesktop
-    
+
+    pavucontrol
     # Офис
     libreoffice-fresh
-    
-  ];
 
   # Пакеты для СИСТЕМЫ (все пользователи)
-  systemPackages = with pkgs; [
     # Редакторы
     vim
     nano
     helix        # современный редактор
-
+    vscode    
     # Мониторинг
     htop
     btop         # красивая замена htop
     neofetch
-    #nvtop        # мониторинг GPU
+   # nvtopPackages.full        # мониторинг GPU
     
+    # fish пакеты
+    fishPlugins.done
+    fishPlugins.fzf-fish
+    fishPlugins.forgit
+    fishPlugins.hydro
+    fzf
+    fishPlugins.grc
+    grc
     # Архиваторы
     zip
     unzip
     p7zip
     unrar
+    # пакеты для Hyperland
+    hyprlock
+    hypridle
+    nwg-look
     
     # Сетевые утилиты
     wget
@@ -74,13 +83,9 @@
     gcc
     python3
     nodejs
-
     # автомонтирование дисков
     udisks2
-  ];
-
   # Игровые пакеты
-  gamingPackages = with pkgs; [
     steam
     protonup-qt  # менеджер Proton-GE
     mangohud     # оверлей FPS

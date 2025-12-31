@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1761588595,
+        "narHash": "sha256-XKUZz9zewJNUj46b4AJdiRZJAvSZ0Dqj2BNfXvFlJC4=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "f387cd2afec9419c8ee37694406ca490c3f34ee5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -53,6 +69,7 @@
     "root": {
       "inputs": {
         "nixpkgs": "nixpkgs",
+        "yandex-browser": "yandex-browser",
         "zapret-discord-youtube": "zapret-discord-youtube"
       }
     },
@@ -68,6 +85,27 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "yandex-browser": {
+      "inputs": {
+        "flake-compat": "flake-compat",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764203396,
+        "narHash": "sha256-8aN6n8+QTXA1wN+DcpbqB+zsnxK+dMxkL8/Uht4ogi0=",
+        "owner": "miuirussia",
+        "repo": "yandex-browser.nix",
+        "rev": "4ce75daa7a33c05acc89756e90eeae3dd16900ab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "miuirussia",
+        "repo": "yandex-browser.nix",
         "type": "github"
       }
     },
