@@ -1,5 +1,16 @@
 { pkgs, ... }:
 {
+fonts.packages = with pkgs; [
+    # Основные Nerd Fonts
+    nerd-fonts.jetbrains-mono    # Уже есть
+    nerd-fonts.fira-code         # Нужно добавить
+    nerd-fonts.symbols-only      # Нужно добавить
+    dejavu_fonts
+    noto-fonts
+    noto-fonts-color-emoji
+    # Font Awesome
+    font-awesome                # Включает все версии
+  ];
 environment.systemPackages = with pkgs; [
   # Терминалы и оболочки
     kitty
@@ -26,7 +37,6 @@ environment.systemPackages = with pkgs; [
     telegram-desktop
     vesktop
     # для waybar
-    nerd-fonts.jetbrains-mono          # Icon fonts (JetBrainsMono recommended)
     jq                   # JSON parsing for weather script
     networkmanager       # Network management
     libnotify            # Desktop notifications for profile changes
@@ -92,6 +102,7 @@ environment.systemPackages = with pkgs; [
     # автомонтирование дисков
     udisks2
   # Игровые пакеты
+    qbittorrent
     steam
     protonup-qt  # менеджер Proton-GE
     mangohud     # оверлей FPS
