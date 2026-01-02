@@ -18,13 +18,19 @@ environment.systemPackages = with pkgs; [
     #hyprlock    # блокировщик экрана
     #hypridle    # управление бездействием
     waybar
+    gdm-settings
     # Мультимедиа
     vlc
     mpv
     # Мессенджеры
     telegram-desktop
     vesktop
-
+    # для waybar
+    nerd-fonts.jetbrains-mono          # Icon fonts (JetBrainsMono recommended)
+    jq                   # JSON parsing for weather script
+    networkmanager       # Network management
+    libnotify            # Desktop notifications for profile changes
+    brightnessctl        # Backlight control utility
     pavucontrol
     # Офис
     libreoffice-fresh
@@ -58,7 +64,7 @@ environment.systemPackages = with pkgs; [
     hyprlock
     hypridle
     nwg-look
-    
+       
     # Сетевые утилиты
     wget
     curl
@@ -91,5 +97,6 @@ environment.systemPackages = with pkgs; [
     mangohud     # оверлей FPS
     goverlay     # GUI для MangoHud
     gamemode     # оптимизация для игр
+    soteria
   ];
 }

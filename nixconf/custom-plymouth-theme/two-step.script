@@ -1,0 +1,15 @@
+// Текст во время загрузки
+message_font = "DejaVu Sans Book 12";
+message_color = 0xffffffff; // белый
+message_alignment = "center";
+
+// Функция отображения текста
+fun display_message(text) {
+    // Здесь можно кастомный текст
+    if (text == "Starting up...") {
+        text = "Запуск системы...";
+    } else if (text == "A start job is running for ...") {
+        text = "Запускается служба...";
+    }
+    // и т.д.
+}

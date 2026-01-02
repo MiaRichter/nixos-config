@@ -1,0 +1,9 @@
+[Plymouth Theme]
+Name=Custom Theme
+Description=My custom boot theme
+ModuleName=two-step
+
+[two-step]
+ImageDir=/usr/share/plymouth/themes/custom
+HorizontalAlignment=0.5
+VerticalAlignment=0.5

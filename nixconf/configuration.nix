@@ -14,7 +14,7 @@
     ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
-  # Use the systemd-boot EFI boot loader.
+  # Use the systemd-boot EFI boot loader.fdf
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -106,6 +106,7 @@
     };
   };
 security = {
+    soteria.enable = true;
     polkit.enable = true;
     rtkit.enable = true;  # Для pipewire
   };
