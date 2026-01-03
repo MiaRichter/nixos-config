@@ -12,6 +12,7 @@ fonts.packages = with pkgs; [
     font-awesome                # Включает все версии
   ];
 environment.systemPackages = with pkgs; [
+    
   # Терминалы и оболочки
     kitty
     #alacritty  # опционально
@@ -54,7 +55,8 @@ environment.systemPackages = with pkgs; [
     # Мониторинг
     htop
     btop         # красивая замена htop
-    neofetch
+    #neofetch
+    fastfetch
    # nvtopPackages.full        # мониторинг GPU
     
     # fish пакеты
@@ -74,11 +76,23 @@ environment.systemPackages = with pkgs; [
     hyprlock
     hypridle
     nwg-look
+    hyprpolkitagent
+    hyprshot
        
     # Сетевые утилиты
     wget
     curl
+    # рабочие утилиты
+    
+    python3
     git
+    nodejs
+    gcc
+    # Дополнительные инструменты
+    python3Packages.pip
+    go
+    rustc
+    cargo
     sshfs
     
     # Системные утилиты
@@ -86,7 +100,10 @@ environment.systemPackages = with pkgs; [
     usbutils     # lsusb
     lm_sensors   # sensors
     dmidecode    # информация о железе
-    
+    flatpak
+    microcode-intel
+    linux-firmware
+    alsa-plugins
     # Файловые системы
     ntfs3g
     exfatprogs
@@ -94,7 +111,12 @@ environment.systemPackages = with pkgs; [
     # Безопасность
     gnupg
     openssl
-    
+    # Спонтанные покупки
+    lsd
+    bat
+    fd
+    duf
+    dust
     # Разработка
     gcc
     python3
@@ -108,6 +130,5 @@ environment.systemPackages = with pkgs; [
     mangohud     # оверлей FPS
     goverlay     # GUI для MangoHud
     gamemode     # оптимизация для игр
-    soteria
   ];
 }

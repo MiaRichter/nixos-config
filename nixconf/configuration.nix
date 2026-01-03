@@ -13,6 +13,14 @@
       ./nvidia.nix
     ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
+
+  # Nix settings
+  nix.settings.auto-optimise-store = true;
   nixpkgs.config.allowUnfree = true;
   # Use the systemd-boot EFI boot loader.fdf
   boot.loader.systemd-boot.enable = true;
@@ -23,7 +31,12 @@
   
   time.timeZone = "Asia/Yekaterinburg";
   
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      set -U fish_greeting ""
+    '';
+  };
   # ВСЕ сервисы должны быть в одном блоке
   services = {
     # Дисплей менеджер
@@ -31,6 +44,8 @@
       enable = true;
       wayland = true;
     };
+    flatpak.enable = true;
+
     
     # Звук
     pipewire = {
@@ -106,7 +121,6 @@
     };
   };
 security = {
-    soteria.enable = true;
     polkit.enable = true;
     rtkit.enable = true;  # Для pipewire
   };

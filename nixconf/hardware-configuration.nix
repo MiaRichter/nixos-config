@@ -12,7 +12,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-
+  boot.supportedFilesystems = [ "ntfs" ];
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/e355aa1c-1c09-4c6f-96dc-fe3b92f5a1e6";
       fsType = "btrfs";
@@ -23,7 +23,15 @@
       fsType = "ext4";
       options = ["noatime" "nodiratime" ];
     };
-  swapDevices = [ ];
+  fileSystems."/mnt/namana2" =
+    { device = "/dev/disk/by-uuid/349e1903-332b-4ce2-82f2-a3e64466d501";
+      fsType = "ext4";
+      options = ["noatime" "nodiratime" ];
+    };
+  swapDevices = [{
+    device = "/var/lib/swapfile";
+    size = 16*1024; # 16 GB
+  }];
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction

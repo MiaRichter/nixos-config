@@ -46,7 +46,7 @@
     // ═══════════════════════════════════════════════════════════
     
     "custom/launcher": {
-        "format": "󰣇",
+        "format": "",
         "on-click": "$HOME/.config/rofi/scripts/launcher_t6",
         "tooltip": false
     },
@@ -112,7 +112,7 @@
     "cpu": {
         "interval": 2,
         "format": "󰻠 {usage}%",
-        "on-click": "kitty -e htop"
+        "on-click": "kitty -e btop"
     },
     
     "temperature#cpu": {
@@ -184,19 +184,7 @@
         "tooltip-format": "Idle inhibitor: {status}"
     },
     
-    "battery": {
-        "interval": 60,
-        "states": {
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{icon} {capacity}%",
-        "format-charging": "󰂄 {capacity}%",
-        "format-plugged": "󰚥 {capacity}%",
-        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-        "tooltip-format": "{timeTo}\nPower: {power}W",
-        "swap-icon-label": false
-    },
+   
     
     "tray": {
         "icon-size": 18,
@@ -213,7 +201,7 @@
         "return-type": "json",
         "interval": 3,
         "signal": 10,
-        "on-click": "kitty -e htop"
+        "on-click": "kitty -e btop"
     },
 
     "custom/brightness": {
@@ -226,22 +214,8 @@
         "on-scroll-down": "~/.config/waybar/scripts/brightness.sh --dec"
     },
 
-    "custom/weather": {
-        "exec": "~/.config/waybar/scripts/weather.sh Rome",
-        "return-type": "json",
-        "interval": 1800,
-        "tooltip": true,
-        "on-click": "xdg-open https://weather.com"
-    },
 
-    "custom/power-profile": {
-        "exec": "~/.config/waybar/scripts/power-profile.sh",
-        "return-type": "json",
-        "interval": 10,
-        "signal": 9,
-        "on-click": "~/.config/waybar/scripts/power-profile.sh --toggle",
-        "on-click-right": "kitty -e sh -lc 'powerprofilesctl list'"
-    },
+
     
     "custom/power": {
         "format": "󰐥",
